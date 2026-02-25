@@ -5,11 +5,19 @@ workflows:
       java: 21
       node: 18
     scripts:
-      - npm install
-      - npm run build
-      - npx cap sync android
-      - chmod +x android/gradlew
-      - cd android
-      - ./gradlew assembleDebug
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build the app
+        script: |
+          npm run build
+      - name: Sync Capacitor with Android platform
+        script: |
+          npx cap sync android
+      - name: Set Gradle permissions and build APK
+        script: |
+          chmod +x android/gradlew   # Ensure gradlew is executable
+          cd android
+          ./gradlew assembleDebug    # Build APK
     artifacts:
       - android/app/build/outputs/**/*.apk
